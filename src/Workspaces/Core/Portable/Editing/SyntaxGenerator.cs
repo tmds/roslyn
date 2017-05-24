@@ -1680,6 +1680,14 @@ namespace Microsoft.CodeAnalysis.Editing
         public abstract SyntaxNode TupleTypeExpression(IEnumerable<SyntaxNode> elements);
 
         /// <summary>
+        /// Creates an expression that denotes a tuple type.
+        /// </summary>
+        public SyntaxNode TupleTypeExpression(params SyntaxNode[] types)
+        {
+            return TupleTypeExpression((IEnumerable<SyntaxNode>)types);
+        }
+
+        /// <summary>
         /// Creates an expression that denotes a tuple element.
         /// </summary>
         public abstract SyntaxNode TupleElementExpression(SyntaxNode type, string name = null);
@@ -1688,6 +1696,14 @@ namespace Microsoft.CodeAnalysis.Editing
         /// Creates a tuple expression.
         /// </summary>
         public abstract SyntaxNode TupleExpression(IEnumerable<SyntaxNode> arguments);
+
+        /// <summary>
+        /// Creates a tuple expression.
+        /// </summary>
+        public SyntaxNode TupleExpression(params SyntaxNode[] arguments)
+        {
+            return TupleExpression((IEnumerable<SyntaxNode>)arguments);
+        }
 
         /// <summary>
         /// Creates an expression that denotes an assignment from the right argument to left argument.
