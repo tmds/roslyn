@@ -1682,9 +1682,9 @@ namespace Microsoft.CodeAnalysis.Editing
         /// <summary>
         /// Creates an expression that denotes a tuple type.
         /// </summary>
-        public SyntaxNode TupleTypeExpression(params SyntaxNode[] types)
+        public SyntaxNode TupleTypeExpression(params SyntaxNode[] elements)
         {
-            return TupleTypeExpression((IEnumerable<SyntaxNode>)types);
+            return TupleTypeExpression((IEnumerable<SyntaxNode>)elements);
         }
 
         /// <summary>
