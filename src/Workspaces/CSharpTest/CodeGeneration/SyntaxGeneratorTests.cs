@@ -224,11 +224,11 @@ public class MyAttribute : Attribute { public int Value {get; set;} }",
             VerifySyntax<TypeSyntax>(_g.NullableTypeExpression(_g.IdentifierName("x")), "x?");
             VerifySyntax<TypeSyntax>(_g.NullableTypeExpression(_g.NullableTypeExpression(_g.IdentifierName("x"))), "x?");
 
-            VerifySyntax<TypeSyntax>(_g.TupleTypeExpression(), "()");
-            VerifySyntax<TypeSyntax>(_g.TupleTypeExpression(_g.TupleElementExpression(_g.IdentifierName("x"), _g.IdentifierName("y")), "(x y)");
-            VerifySyntax<TypeSyntax>(_g.TupleTypeExpression(_g.TupleElementExpression(_g.IdentifierName("x"))), "(x)");
-            VerifySyntax<TypeSyntax>(_g.TupleTypeExpression(_g.TupleElementExpression(_g.IdentifierName("x"), _g.IdentifierName("y"))), "(x, y)");
-            VerifySyntax<TupleExpressionSyntax>(_g.TupleExpression(_g.TupleElementExpression(_g.IdentifierName("x"), _g.IdentifierName("y"))), "(x, y)");
+            VerifySyntax<TypeSyntax>(_g.TupleTypeExpression(new SyntaxNode[] {}), "()");
+            VerifySyntax<TypeSyntax>(_g.TupleTypeExpression(new[] { _g.TupleElementExpression(_g.IdentifierName("x"), "y") }), "(x y)");
+            VerifySyntax<TypeSyntax>(_g.TupleTypeExpression(new[] { _g.TupleElementExpression(_g.IdentifierName("x")) }), "(x)");
+            VerifySyntax<TypeSyntax>(_g.TupleTypeExpression(new[] { _g.TupleElementExpression(_g.IdentifierName("x")), _g.TupleElementExpression(_g.IdentifierName("y")) }), "(x, y)");
+            VerifySyntax<TupleExpressionSyntax>(_g.TupleExpression(new[] { _g.Argument(_g.IdentifierName("x")), _g.Argument(_g.IdentifierName("y")) }), "(x, y)");
         }
 
         [Fact]
