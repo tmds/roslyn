@@ -1690,15 +1690,15 @@ namespace Microsoft.CodeAnalysis.Editing
         /// <summary>
         /// Creates an expression that denotes a tuple type.
         /// </summary>
-        public SyntaxNode TupleTypeExpression(IEnumerable<ITypeSymbol> elementTypes, IEnumerable<string> elementNames = default(IEnumerable<string>))
+        public SyntaxNode TupleTypeExpression(IEnumerable<ITypeSymbol> elementTypes, IEnumerable<string> elementNames = null)
         {
             if (elementNames != null)
             {
                 if (elementNames.Count() != elementTypes?.Count())
                 {
-                    throw new ArgumentException(CodeAnalysisResources.TupleElementNameCountMismatch, nameof(elementNames));
+                    throw new ArgumentException("The number of element names must match the cardinality of the tuple.", nameof(elementNames));
                 }
-                return TupleTypeExpression(elementTypes.Zip(elementNames).Select(AsTupleElement));
+                return TupleTypeExpression(elementTypes.Zip(elementNames, AsTupleElement));
             }
             return TupleTypeExpression(elementTypes.Select(AsTupleElement));
         }
@@ -1708,27 +1708,14 @@ namespace Microsoft.CodeAnalysis.Editing
         /// </summary>
         public abstract SyntaxNode TupleElementExpression(SyntaxNode type, string name = null);
 
-        public override SyntaxNode TupleElementExpression(ITypeSymbol type, string name = null)
+        public SyntaxNode TupleElementExpression(ITypeSymbol type, string name = null)
             => TupleElementExpression(TypeExpression(type), name);
 
         private SyntaxNode AsTupleElement(ITypeSymbol type)
-            => AsTupleElement(type, name: null);
+            => TupleElementExpression(type, name: null);
 
         private SyntaxNode AsTupleElement(ITypeSymbol type, string name)
             => TupleElementExpression(type, name);
-
-        /// <summary>
-        /// Creates a tuple expression.
-        /// </summary>
-        public abstract SyntaxNode TupleExpression(IEnumerable<SyntaxNode> arguments);
-
-        /// <summary>
-        /// Creates a tuple expression.
-        /// </summary>
-        public SyntaxNode TupleExpression(params SyntaxNode[] arguments)
-        {
-            return TupleExpression((IEnumerable<SyntaxNode>)arguments);
-        }
 
         /// <summary>
         /// Creates an expression that denotes an assignment from the right argument to left argument.

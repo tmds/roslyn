@@ -3977,39 +3977,17 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             }
         }
 
-        public override SyntaxNode TupleTypeExpression(IEnumerable<ITypeSymbol> elementTypes, IEnumerable<string> elementNames = default(IEnumerable<string>))
-        {
-            if (elementNames != null)
-            {
-                if (elementNames.Count() != elementTypes?.Count())
-                {
-                    throw new ArgumentException(CodeAnalysisResources.TupleElementNameCountMismatch, nameof(elementNames));
-                }
-                return TupleTypeExpression(elementTypes.Zip(elementNames).Select(AsTupleElement));
-            }
-            return TupleTypeExpression(elementTypes.Select(AsTupleElement));
-        }
-
         public override SyntaxNode TupleTypeExpression(IEnumerable<SyntaxNode> elements)
         {
             if (elements == null || elements.Count() <= 1)
             {
-                throw new ArgumentException(CodeAnalysisResources.TuplesNeedAtLeastTwoElements, nameof(elements));
+                throw new ArgumentException("Tuples must have at least two elements.", nameof(elements));
             }
             return SyntaxFactory.TupleType(SyntaxFactory.SeparatedList(elements.Cast<TupleElementSyntax>()));
         }
 
         public override SyntaxNode TupleElementExpression(SyntaxNode type, string name = null)
             => SyntaxFactory.TupleElement((TypeSyntax)type, name?.ToIdentifierToken() ?? default(SyntaxToken));
-
-        public override SyntaxNode TupleElementExpression(ITypeSymbol type, string name = null)
-            => SyntaxFactory.TupleElement(TypeExpression(type), name);
-
-        private SyntaxNode AsTupleElement(ITypeSymbol type)
-            => AsTupleElement(type, name: null);
-
-        private SyntaxNode AsTupleElement(ITypeSymbol type, string name)
-            => TupleElementExpression(type, name);
 
         public override SyntaxNode Argument(string nameOpt, RefKind refKind, SyntaxNode expression)
         {

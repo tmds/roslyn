@@ -533,7 +533,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.CodeGeneration
 
         Public Overrides Function TupleTypeExpression(elements As IEnumerable(Of SyntaxNode)) As SyntaxNode
             If elements Is Nothing Or elements.Count() <= 1 Then
-                Throw New ArgumentException(CodeAnalysisResources.TuplesNeedAtLeastTwoElements)
+                Throw New ArgumentException("Tuples must have at least two elements.")
             End If
             Return SyntaxFactory.TupleType(SyntaxFactory.SeparatedList(elements.Cast(Of TupleElementSyntax)()))
         End Function
